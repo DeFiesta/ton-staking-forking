@@ -1,13 +1,12 @@
-# Sample Hardhat Project
+# TON staking demo
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+This project demonstrates some functionnalities of the ton-staking protocol.
 
 Try running some of the following tasks:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
+open a first terminal
 npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
+open a second terminal
+npx hardhat run scripts/depositV2.js --network hardhat
 ```
