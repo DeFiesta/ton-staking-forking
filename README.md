@@ -2,7 +2,7 @@
 
 This project demonstrates some functionnalities of the ton-staking protocol.
 
-Try running some of the following tasks:
+Please run the following tasks:
 
 ```shell
 open a first terminal
