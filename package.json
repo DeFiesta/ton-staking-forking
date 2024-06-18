@@ -1,0 +1,14 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.5"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/contracts": "^2.5.1",
+    "@uniswap/v3-periphery": "^1.4.4",
+    "ethers": "^5.7.2",
+    "solc": "^0.8.26"
+  }
+}
