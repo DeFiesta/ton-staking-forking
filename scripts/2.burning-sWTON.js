@@ -158,7 +158,7 @@ async function main() {
     console.log("--------------UPDATE SEIGNIORAGE AFTER A LARGE AMOUNT OF BLOCKS ------------------------")
     console.log("----------------------------------------------------------------------------------------")
 
-    // Mine a large amount of blocks to cover the DTD
+    // Mine a large amount of blocks (around 150 days)
     await ethers.provider.send("hardhat_mine", ["0xf4240"]); // 0xf4240 is the hexadecimal representation of 1.000.000
 
     // Set the balance of the Layer2 address to cover gas fees
@@ -184,33 +184,29 @@ async function main() {
     // Stop impersonating the Layer2 address
     await ethers.provider.send("hardhat_stopImpersonatingAccount", [layer2Address]);
 
-    // Call the requestWithdrawal function
-    const amountToWithdraw = ethers.utils.parseUnits("100000", 27); // Adjust the amount as needed
-    const requestWithdrawalTx = await depositManager.requestWithdrawal(layer2Address, updatedCoinageBalance);
-    await requestWithdrawalTx.wait();
-    console.log("Withdrawal requested successfully");
-
     console.log("----------------------------------------------------------------------------------------")
-    console.log("-----------------------------USER PROCESSES WITHDRAWAL ---------------------------------")
+    console.log("---------------------------USER DIRECTLY BURNS HIS sWTON -------------------------------")
     console.log("----------------------------------------------------------------------------------------")
 
+    const amountToBurn = updatedCoinageBalance;
 
-    // Mine a large amount of blocks to cover the DTD
-    await ethers.provider.send("hardhat_mine", ["0xf4240"]); // 0xf4240 is the hexadecimal representation of 1.000.000
+    // Check the user's sWTON balance before burning
+    const userBalanceBeforeBurn = await coinage.balanceOf(deployer.address);
+    console.log("User sWTON balance before burning:", ethers.utils.formatUnits(userBalanceBeforeBurn, 27));
+
+    const burnUserToken = await coinage.burn(amountToBurn);
+    await burnUserToken.wait();
 
 
-    const requestProcessTx = await depositManager.processRequest(layer2Address, false);
-    await requestProcessTx.wait();
-    console.log("Withdrawal processed successfully");
-
-    // Fetch and log the user's WTON balance after processing the withdrawal
-    const finalWtonBalance = await WTON.balanceOf(deployer.address);
-    console.log("user WTON balance after processing withdrawal:", ethers.utils.formatUnits(finalWtonBalance, 27));
-
+    // Fetch and log the user's sWTON balance after burning
+    const updatedCoinageBalance2 = await coinage.balanceOf(deployer.address);
+    console.log("user sWTON balance after burning:", ethers.utils.formatUnits(updatedCoinageBalance2, 27));
 
     console.log("----------------------------------------------------------------------------------------")
     console.log("-----------------------------------END OF SCRIPT--------------------------------------")
     console.log("----------------------------------------------------------------------------------------")
+
+
 }
 
 main()
@@ -219,3 +215,4 @@ main()
         console.error(error);
         process.exit(1);
     });
+
