@@ -136,6 +136,7 @@ async function main() {
 
     // Fetch the coinage contract address for the layer2 address
     const coinageAddress = await seigManager.coinages(layer2Address);
+    console.log("coinage address:", coinageAddress);
     if (coinageAddress === ethers.constants.AddressZero) {
         console.error("Coinage for the selected Layer2 address has not been deployed.");
         return;
@@ -201,6 +202,33 @@ async function main() {
     // Fetch and log the user's sWTON balance after burning
     const updatedCoinageBalance2 = await coinage.balanceOf(deployer.address);
     console.log("user sWTON balance after burning:", ethers.utils.formatUnits(updatedCoinageBalance2, 27));
+    const accStakedAccount = await depositManager.accStakedAccount(deployer.address);
+    console.log("user _accStakedAccount balance after burning:", ethers.utils.formatUnits(accStakedAccount, 27));
+    const userWtonBalance = await WTON.balanceOf(deployer.address);
+    console.log("user WTON balance after burning:", ethers.utils.formatUnits(userWtonBalance, 27));
+
+    console.log("----------------------------------------------------------------------------------------")
+    console.log("------------------------USER REQUESTS 20000 WTON WITHDRAWAL ----------------------------")
+    console.log("----------------------------------------------------------------------------------------")
+
+    // Call the requestWithdrawal function
+    const requestWithdrawalTx = await depositManager.requestWithdrawal(layer2Address, 20000);
+    await requestWithdrawalTx.wait();
+    console.log("Withdrawal requested successfully");
+
+
+    // Mine a large amount of blocks to cover the DTD
+    await ethers.provider.send("hardhat_mine", ["0xf4240"]); // 0xf4240 is the hexadecimal representation of 1.000.000
+
+
+    const requestProcessTx = await depositManager.processRequest(layer2Address, false);
+    await requestProcessTx.wait();
+    console.log("Withdrawal processed successfully");
+
+    // Fetch and log the user's WTON balance after processing the withdrawal
+    const finalWtonBalance = await WTON.balanceOf(deployer.address);
+    console.log("user WTON balance after processing withdrawal:", ethers.utils.formatUnits(finalWtonBalance, 27));
+
 
     console.log("----------------------------------------------------------------------------------------")
     console.log("-----------------------------------END OF SCRIPT--------------------------------------")

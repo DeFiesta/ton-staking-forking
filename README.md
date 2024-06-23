@@ -8,5 +8,6 @@ Please run the following tasks:
 open a first terminal
 npx hardhat node
 open a second terminal
-npx hardhat run scripts/depositV2.js --network hardhat
+npx hardhat run scripts/1.staking-demo-fork.js --network hardhat
+npx hardhat run scripts/2.burning-sWTON.js --network hardhat
 ```
