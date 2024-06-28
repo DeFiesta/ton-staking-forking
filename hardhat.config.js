@@ -1,7 +1,15 @@
 require("@nomiclabs/hardhat-ethers");
 
 module.exports = {
-  solidity: "0.8.4",
+  solidity: {
+    version: "0.5.12",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  },
   networks: {
     hardhat: {
       forking: {
@@ -9,5 +17,14 @@ module.exports = {
         //blockNumber: 12345678 // Optional: specify a block number to fork from
       }
     }
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
+  },
+  mocha: {
+    timeout: 40000
   }
 };

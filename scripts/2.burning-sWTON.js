@@ -207,6 +207,7 @@ async function main() {
     const userWtonBalance = await WTON.balanceOf(deployer.address);
     console.log("user WTON balance after burning:", ethers.utils.formatUnits(userWtonBalance, 27));
 
+
     console.log("----------------------------------------------------------------------------------------")
     console.log("------------------------USER REQUESTS 20000 WTON WITHDRAWAL ----------------------------")
     console.log("----------------------------------------------------------------------------------------")
